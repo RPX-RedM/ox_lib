@@ -1,5 +1,3 @@
-if cache.game == 'redm' then return end
-
 ---@class KeybindProps
 ---@field name string
 ---@field description string
@@ -45,34 +43,67 @@ function keybind_mt:getCurrentKey()
     return GetControlInstructionalButton(0, self.hash, true):sub(3)
 end
 
----@param data KeybindProps
----@return CKeybind
-function lib.addKeybind(data)
-    if not data.defaultKey then data.defaultKey = '' end
+if cache.game == 'redm' then
+    ---@param data KeybindProps
+    ---@return CKeybind
+    function lib.addKeybind(data)
+        if not data.hash then return error("No keybind key defined") end
+   
+        data.disabled = data.disabled
+        data.disable = disableKeybind
+        keybinds[data.name] = setmetatable(data, keybind_mt)
 
-    RegisterCommand('+' .. data.name, function()
-        if not data.onPressed or data.disabled or IsPauseMenuActive() then return end
-        data:onPressed()
-    end)
+        return data --[[@as CKeybind]]
+    end
+    CreateThread(function()
+        while true do
+            Wait(0)
+            for k, v in pairs(keybinds) do
+                if IsControlJustReleased(0, v.hash) then
+                    print("Hi")
+                    if not v.onReleased or v.disabled or IsPauseMenuActive() then goto continue end
+                    v:onReleased()
+                end
 
-    RegisterCommand('-' .. data.name, function()
-        if not data.onReleased or data.disabled or IsPauseMenuActive() then return end
-        data:onReleased()
-    end)
+                if IsControlJustPressed(0, v.hash) then
+                    if not v.onPressed or v.disabled or IsPauseMenuActive() then goto continue end
+                    v:onPressed()
+                end
 
-    RegisterKeyMapping('+' .. data.name, data.description, 'keyboard', data.defaultKey)
+                ::continue::
+            end
+        end
+    end)    
+else
+    ---@param data KeybindProps
+    ---@return CKeybind
+    function lib.addKeybind(data)
+        if not data.defaultKey then data.defaultKey = '' end
 
-    SetTimeout(500, function()
-        TriggerEvent('chat:removeSuggestion', ('/+%s'):format(data.name))
-        TriggerEvent('chat:removeSuggestion', ('/-%s'):format(data.name))
-    end)
+        RegisterCommand('+' .. data.name, function()
+            if not data.onPressed or data.disabled or IsPauseMenuActive() then return end
+            data:onPressed()
+        end)
 
-    data.hash = joaat('+' .. data.name) | 0x80000000
-    data.disabled = data.disabled
-    data.disable = disableKeybind
-    keybinds[data.name] = setmetatable(data, keybind_mt)
+        RegisterCommand('-' .. data.name, function()
+            if not data.onReleased or data.disabled or IsPauseMenuActive() then return end
+            data:onReleased()
+        end)
 
-    return data --[[@as CKeybind]]
+        RegisterKeyMapping('+' .. data.name, data.description, 'keyboard', data.defaultKey)
+
+        SetTimeout(500, function()
+            TriggerEvent('chat:removeSuggestion', ('/+%s'):format(data.name))
+            TriggerEvent('chat:removeSuggestion', ('/-%s'):format(data.name))
+        end)
+
+        data.hash = joaat('+' .. data.name) | 0x80000000
+        data.disabled = data.disabled
+        data.disable = disableKeybind
+        keybinds[data.name] = setmetatable(data, keybind_mt)
+
+        return data --[[@as CKeybind]]
+    end
 end
 
 return lib.addKeybind

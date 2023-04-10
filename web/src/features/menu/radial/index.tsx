@@ -96,6 +96,13 @@ const RadialMenu: React.FC = () => {
     }
     setMenu({ ...data, page: initialPage });
     setVisible(true);
+
+    document.addEventListener('keyup', (e: KeyboardEvent) => {
+      if (e.key === 'Escape' || e.key === 'CapsLock') {
+        setVisible(false);
+        fetchNui('radialClose');
+      }
+    });
   });
 
   useNuiEvent('refreshItems', (data: RadialMenuItem[]) => {
