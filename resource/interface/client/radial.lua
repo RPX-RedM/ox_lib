@@ -297,8 +297,9 @@ lib.addKeybind({
     description = 'Open radial menu',
     hash = 0xCEE12B50,
     onPressed = function()
-        print("HI")
         if isDisabled then return end
+
+        if not LocalPlayer.state.isLoggedIn then return end
 
         if isOpen then
             return lib.hideRadial()
@@ -331,6 +332,7 @@ lib.addKeybind({
             DisableControlAction(0, 0xB2F377E8, true)
             DisableControlAction(0, 0xADEAF48C, true)
             DisableControlAction(0, 0x4A903C11, true)
+            DisableControlAction(0, 0xD82E0BD2, true)
             DisableControlAction(0, 0x9720FCEE, true)
             Wait(0)
         end

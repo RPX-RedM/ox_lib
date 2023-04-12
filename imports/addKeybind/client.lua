@@ -60,7 +60,6 @@ if cache.game == 'redm' then
             Wait(0)
             for k, v in pairs(keybinds) do
                 if IsControlJustReleased(0, v.hash) then
-                    print("Hi")
                     if not v.onReleased or v.disabled or IsPauseMenuActive() then goto continue end
                     v:onReleased()
                 end
