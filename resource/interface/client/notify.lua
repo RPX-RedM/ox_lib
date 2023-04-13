@@ -14,6 +14,8 @@
 
 ---@param data NotifyProps
 function lib.notify(data)
+    if not data.position then data.position = 'center-left' end
+    print(json.encode(data))
     SendNUIMessage({
         action = 'notify',
         data = data
