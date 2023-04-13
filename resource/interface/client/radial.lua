@@ -340,49 +340,6 @@ lib.addKeybind({
     onReleased = lib.hideRadial,
 })
 
-exports('myMenuHandler', function(menu, item)
-    print(menu, item)
-
-    if menu == 'police_menu' and item == 1 then
-        print('Handcuffs')
-    end
-end)
-
-lib.registerRadial({
-    id = 'police_menu',
-    items = {
-      {
-        label = 'Handcuff',
-        icon = 'handcuffs',
-        onSelect = 'myMenuHandler'
-      },
-      {
-        label = 'Frisk',
-        icon = 'hand'
-      },
-      {
-        label = 'Fingerprint',
-        icon = 'fingerprint'
-      },
-      {
-        label = 'Jail',
-        icon = 'bus'
-      },
-
-    }
-  })
-  
-  lib.addRadialItem({
-    {
-      id = 'police',
-      label = 'Police',
-      icon = 'shield-halved',
-      menu = 'police_menu'
-    },
-  })
-  
-lib.disableRadial(false)
-
 AddEventHandler('onClientResourceStop', function(resource)
     for i = #menuItems, 1, -1 do
         local item = menuItems[i]
