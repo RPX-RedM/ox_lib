@@ -1,3 +1,4 @@
+---@diagnostic disable: param-type-mismatch
 ---@class KeybindProps
 ---@field name string
 ---@field description string
@@ -21,7 +22,6 @@ local function disableKeybind(self, toggle)
 end
 
 local IsPauseMenuActive = IsPauseMenuActive
-local GetControlInstructionalButton = GetControlInstructionalButton
 
 local keybind_mt = {
     disabled = false,
@@ -39,15 +39,11 @@ function keybind_mt:__index(index)
     end
 end
 
-function keybind_mt:getCurrentKey()
-    return GetControlInstructionalButton(0, self.hash, true):sub(3)
-end
-
 if cache.game == 'redm' then
     ---@param data KeybindProps
     ---@return CKeybind
     function lib.addKeybind(data)
-        if not data.hash then return error("No keybind key defined") end
+        if not data.hash then return error("No keybind key defined") --[[@as CKeybind]] end
    
         data.disabled = data.disabled
         data.disable = disableKeybind

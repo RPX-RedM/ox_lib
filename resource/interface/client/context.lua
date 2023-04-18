@@ -37,6 +37,11 @@ local function closeContext(_, cb, onExit)
     if not cb then SendNUIMessage({ action = 'hideContext' }) end
 
     openContextMenu = nil
+
+    for i=1, 10 do Citizen.InvokeNative(0xFDB74C9CC54C3F37, 1.0 - (i / 10)); Wait(15) end	-- SET_TIMECYCLE_MODIFIER_STRENGTHs
+    Citizen.InvokeNative(0x0E3F4AF2D63491FB)
+    DisplayRadar(true)
+    DisplayHud(true)
 end
 
 ---@param id string
@@ -47,6 +52,10 @@ function lib.showContext(id)
     openContextMenu = id
 
     lib.setNuiFocus(false)
+    DisplayRadar(false)
+    DisplayHud(false)
+    Citizen.InvokeNative(0xFA08722A5EA82DA7, 'RespawnLight')   	-- SET_TIMECYCLE_MODIFIER
+    for i=0, 10 do Citizen.InvokeNative(0xFDB74C9CC54C3F37, 0.1 + (i / 10)); Wait(15) end	-- SET_TIMECYCLE_MODIFIER_STRENGTHs
 
     SendNuiMessage(json.encode({
         action = 'showContext',

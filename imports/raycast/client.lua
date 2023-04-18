@@ -1,7 +1,7 @@
 lib.raycast = {}
 
 local StartShapeTestLosProbe = StartShapeTestLosProbe
-local GetShapeTestResultIncludingMaterial = GetShapeTestResultIncludingMaterial
+local GetShapeTestResult = GetShapeTestResult
 local GetWorldCoordFromScreenCoord = GetWorldCoordFromScreenCoord
 
 ---@alias ShapetestIgnore
@@ -26,7 +26,7 @@ function lib.raycast.cam(flags, ignore)
 
 	while true do
 		Wait(0)
-		local retval, hit, endCoords, surfaceNormal, materialHash, entityHit = GetShapeTestResultIncludingMaterial(handle)
+		local retval, hit, endCoords, surfaceNormal, materialHash, entityHit = GetShapeTestResult(handle)
 
 		if retval ~= 1 then
             ---@diagnostic disable-next-line: return-type-mismatch
