@@ -334,6 +334,8 @@ lib.addKeybind({
             DisableControlAction(0, 0x4A903C11, true)
             DisableControlAction(0, 0xD82E0BD2, true)
             DisableControlAction(0, 0x9720FCEE, true)
+            DisableControlAction(0, 0x3D99EEC6, true)
+            DisableControlAction(0, 0xB6F3E4FE, true)
             Wait(0)
         end
     end,
