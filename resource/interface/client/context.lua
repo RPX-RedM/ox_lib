@@ -107,6 +107,11 @@ RegisterNUICallback('clickContext', function(id, cb)
 
     openContextMenu = nil
 
+    for i=1, 10 do Citizen.InvokeNative(0xFDB74C9CC54C3F37, 1.0 - (i / 10)); Wait(15) end	-- SET_TIMECYCLE_MODIFIER_STRENGTHs
+    Citizen.InvokeNative(0x0E3F4AF2D63491FB)
+    DisplayRadar(true)
+    DisplayHud(true)
+
     lib.resetNuiFocus()
 
     if data.onSelect then data.onSelect(data.args) end
